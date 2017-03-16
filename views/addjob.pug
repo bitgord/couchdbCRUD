@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1 Add Job
+  form(method="post", action="/businesses/add")
+    .row
+    .large-12.columns
+      label
+        | Job name
+        input(type="text", name="name", placeholder="Job Name")
+      label
+        | Category
+        select(name='category')
+              option(value='0') Select a Category
+              option(value='Ethereum') Ethereum
+              option(value='Bitcoin') Bitcoin
+              option(value='Developer') Developer
+              option(value='Intern') Intern
+              option(value='Co-founder') Co-founeder
+              option(value='Designer') Designer
+              option(value='Sales') Sales
+              option(value='Other') Other
+      label
+        | Website
+        input(type="text", name="website", placeholder="Business Website")
+      label
+        | Email
+        input(type="text", name="email", placeholder="Email")
+      label
+        | City
+        input(type='text', name='city', placeholder='City')
+      label
+        | Country
+        input(type='text', name='country', placeholder='Country')
+      input.button(type="submit", value="Submit")

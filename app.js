@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
-var uuid = require('uuid');
+var uuid = require('node-uuid');
 
 var index = require('./routes/index');
 var jobs = require('./routes/jobs');
@@ -28,36 +28,35 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Express Session
 app.use(session({
-	secret: 'secret',
-	saveUninitialized: true,
-	resave: true
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
 }));
 
 // Express Validator
 app.use(expressValidator({
-	errorFormatter: function(param, msg, value) {
-		var namespace = param.split('.')
-		, root = namespace.shift()
-		, formParam = root;
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
 
-		while(namespace.length) {
-			formParam += '[' + namespace.shift() + ']';
-		}
-		return {
-			param : formParam,
-			msg  : msg,
-			value : value
-		};
-	}
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
 }));
 
 // Connect-Flash
 app.use(flash());
 app.use(function (req, res, next) {
-	res.locals.messages = require('express-messages')(req, res);
-	next();
+  res.locals.messages = require('express-messages')(req, res);
+  next();
 });
-
 
 app.use('/', index);
 app.use('/jobs', jobs);
