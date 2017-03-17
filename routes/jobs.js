@@ -26,7 +26,13 @@ router.get('/add', function(req, res, next) {
 });
 
 router.get('/show/:id', function(req, res, next) {
-  res.send('respond with a resource');
+  couch.get("couchdbapp", req.params.id).then(({data, headers, status}) => {
+    res.render('show', {
+      job: data
+    });
+  }, err => {
+    res.send(err);
+  });    
 });
 
 router.get('/edit/:id', function(req, res, next) {
