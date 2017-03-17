@@ -1,8 +1,13 @@
 var express = require('express');
 var router = express.Router();
+const NodeCouchDb = require('node-couchdb');
+
+const couch = new NodeCouchDb();
+var uuid = require('node-uuid');
+const uuidV1 = require('uuid/v1');
 
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.render('jobs');
 });
 
 router.get('/add', function(req, res, next) {
@@ -23,7 +28,6 @@ router.get('/category/:category', function(req, res, next) {
 
 router.post('/add', function(req, res, next) {
   req.checkBody('name', 'Name is required').notEmpty();
-  req.checkBody('email', 'Email is required').notEmpty();
   req.checkBody('category', 'Category is required').notEmpty();
   req.checkBody('city', 'City is required').notEmpty();
 
@@ -34,7 +38,20 @@ router.post('/add', function(req, res, next) {
       errors: errors
     });
   } else {
-
+    couch.insert("couchdbapp", {
+      _id: uuid.v1(),
+      name: req.body.name,
+      category: req.body.category,
+	 		website: req.body.website,
+	    email: req.body.email,
+	    city: req.body.city,
+	    country: req.body.country,
+    }).then(({data, headers, status}) => {
+        req.flash('success', 'Job Added');
+        res.redirect('/jobs');
+    }, err => {
+      res.send(err);
+    });
   }
 
 });
