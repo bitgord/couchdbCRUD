@@ -5,6 +5,17 @@ html
     link(rel='stylesheet', href='/bower_components/foundation/css/foundation.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    .row
+      .nav-bar.right
+        ul.button-group
+          li
+            a.button(href="/") Home
+          li
+            a.button(href="/jobs") View All
+          li
+            a.button(href="jobs/add") Add Job
+      h1 BEN Jobs
+      hr
     != messages()
     ul.errors
       if errors

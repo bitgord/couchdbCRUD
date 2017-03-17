@@ -1,4 +1,21 @@
 extends layout
 
 block content
+  a(href="/jobs") << Go Back
+  br
   h1 #{job.name}
+  ul
+    li Category: #{job.category}
+    li Website #{job.website}
+    li Email #{job.email}
+  hr
+  h5 Location Info
+  ul
+    li #{job.city}
+    li #{job.country}
+
+  br
+  a.button(href="/job/edit/"+job._id) edit
+
+  form(method="post", action="/jobs/delete/"+job._id)
+    input.button.alert(type="submit", value="Delete")
