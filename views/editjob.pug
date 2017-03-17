@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  h1 Edit Job
+  form(method="post", action="/jobs/edit/"+job._id)
+    .row
+    .large-12.columns
+      label
+        | Job name
+        input(type="text", name="name", placeholder="Job Name" value=job.name)
+      label
+        | Category
+        select(name='category')
+              option(value='0') Select a Category
+              option(value='Bitcoin') Bitcoin
+              option(value='Ethereum') Ethereum
+      label
+        | Website
+        input(type="text", name="website", placeholder="Job Website" value=job.website)
+      label
+        | Email
+        input(type="text", name="email", placeholder="Email" value=job.email)
+      label
+        | City
+        input(type='text', name='city', placeholder='City' value=job.city)
+      label
+        | Country
+        input(type='text', name='country', placeholder='Country' value=job.country)
+      input.button(type="submit", value="Submit")

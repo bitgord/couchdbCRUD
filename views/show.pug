@@ -15,7 +15,7 @@ block content
     li #{job.country}
 
   br
-  a.button(href="/job/edit/"+job._id) edit
+  a.button(href="/jobs/edit/"+job._id) edit
 
   form(method="post", action="/jobs/delete/"+job._id)
     input.button.alert(type="submit", value="Delete")

@@ -36,7 +36,13 @@ router.get('/show/:id', function(req, res, next) {
 });
 
 router.get('/edit/:id', function(req, res, next) {
-  res.send('respond with a resource');
+  couch.get("couchdbapp", req.params.id).then(({data, headers, status}) => {
+    res.render('editjob', {
+      job: data
+    });
+  }, err => {
+    res.send(err);
+  });    
 });
 
 router.get('/category/:category', function(req, res, next) {
@@ -74,7 +80,42 @@ router.post('/add', function(req, res, next) {
 });
 
 router.post('/edit/:id', function(req, res, next) {
-  res.send('respond with a resource');
+  req.checkBody('name', 'Name is required').notEmpty();
+  req.checkBody('category', 'Category is required').notEmpty();
+  req.checkBody('city', 'City is required').notEmpty();
+
+  var errors = req.validationErrors();
+
+  if(errors){
+    couch.get("couchdbapp", req.params.id).then(({data, headers, status}) => {
+      res.render('editjob', {
+        job: data,
+        errors: errors
+      });
+    }, err => {
+      res.send(err);
+    });
+  } else {
+    couch.get("couchdbapp", req.params.id).then(({data, headers, status}) => {
+      couch.update("couchdbapp", {
+      _id: req.params.id,
+      _rev: data._rev,
+      name: req.body.name,
+      category: req.body.category,
+      website: req.body.website,
+      email: req.body.email,
+      city: req.body.city,
+      country: req.body.country,
+    }).then(({data, headers, status}) => {
+        req.flash('success', 'Job Updated');
+        res.redirect('/jobs');
+    }, err => {
+      res.send(err);
+    });
+    }, err => {
+      res.send(err);
+    });    
+  }
 });
 
 router.post('/delete/:id', function(req, res, next) {
