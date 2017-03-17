@@ -7,7 +7,18 @@ var uuid = require('node-uuid');
 const uuidV1 = require('uuid/v1');
 
 router.get('/', function(req, res, next) {
-  res.render('jobs');
+  const dbName = "couchdbapp";
+  const viewUrl = "_design/alljobs/_view/all";
+
+  const queryOptions = {};
+
+  couch.get(dbName, viewUrl, queryOptions).then(({data, headers, status}) => {
+    res.render('jobs', {
+      jobs: data.rows
+    });
+  }, err => {
+    res.send('err');
+  });
 });
 
 router.get('/add', function(req, res, next) {

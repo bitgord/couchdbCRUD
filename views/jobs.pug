@@ -2,3 +2,9 @@ extends layout
 
 block content
   h1 Jobs
+  ul.listings
+    each job, i in jobs
+      li
+        a(href='/jobs/show/'+job.id) #{job.value.name}
+        br
+        | Location: #{job.value.name} - #{job.value.city}, #{job.value.country}
